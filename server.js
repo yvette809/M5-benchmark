@@ -9,8 +9,8 @@ const {
     genericErrorHandler,
   } = require("./src/errorHandler")
 
-server.use(express())
 server.use(cors())
+server.use(express.json()) 
 
 server.use("/media",mediaRouter )
 server.use("/reviews", reviewsRouter)
