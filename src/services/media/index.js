@@ -35,10 +35,10 @@ const { networkInterfaces } = require("os")
  })
 
  // get media with a specific id
- mediaRouter.get("/:asin", (req,res,next)=>{
+ mediaRouter.get("/:imbdID", (req,res,next)=>{
      try{
         const media = getMedia()
-        const singleMedia = media.find(media => media.imdID === req.params.imdID)
+        const singleMedia = media.find(media => media.imdbID === req.params.imdbID)
         if(singleMedia){
             res.status(200).send(singleMedia)
         }else{
@@ -87,7 +87,7 @@ const { networkInterfaces } = require("os")
    
 // edit media
 
-mediaRouter.put("/:asin", (req,res,next)=>{
+mediaRouter.put("/:imdbID", (req,res,next)=>{
     try{
         const media = getMedia()
         const mediaFound = media.find(m=> m.imdbID === req.params.imdbID)
@@ -95,7 +95,7 @@ mediaRouter.put("/:asin", (req,res,next)=>{
             const mediaPosition = media.indexOf(media)
             const updatedMedia = {...media, ...req.body}
             media[mediaPosition] = updatedMedia
-            fs.writeFileSync(mediaFilePath, media)
+            fs.writeFileSync(mediaFilePath, JSON.stringify(media))
             res.send(updatedMedia)
         }else{
             const error = new Error()
@@ -120,7 +120,7 @@ mediaRouter.delete("/:imdbID", (req,res,next)=>{
         if(mediaToDelete){
             
                 const filteredMedia = media.filter(m=> m.imdbID !== req.params.imdbID)
-                fs.writeFileSync(mediaFilePath, filteredMedia)
+                fs.writeFileSync(mediaFilePath, json.stringify(filteredMedia))
                 res.status(200).send("media deleted")
     
       }else{
